@@ -1,9 +1,11 @@
 package com.company.obj;
 
-public class newObj implements Cloneable {
+import java.io.Serializable;
+
+public class newObj implements Cloneable, Serializable {
     public int value;
     public newObj newObj1;
-    public newObj(int nu){
+    private newObj(int nu){
         value=1;
         System.out.println("newObj 无参构造");
     }
