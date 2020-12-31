@@ -1,22 +1,25 @@
 package com.company;
 
+import com.company.Annotation.Test1Annotation;
+import com.company.Annotation.TestAnnotation;
 import com.company.obj.newObj;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
+import java.util.List;
+import java.util.Map;
 
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, CloneNotSupportedException, NoSuchMethodException, InvocationTargetException, IOException {
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, CloneNotSupportedException, NoSuchMethodException, InvocationTargetException, IOException, NoSuchFieldException {
 	// write your code heresi
         //通过 new
         newObj newObj1=new newObj();
 
         newObj1.value=2;
         // 反射
-
-
+        //System.out.printf("aaaaa::"+newObj1.getValue());
         //无参反射创建
         newObj newObj2= (newObj) Class.forName("com.company.obj.newObj").newInstance();
 
@@ -55,5 +58,37 @@ public class Main {
         System.out.println("newObj31.value"+newObj31.value);
         newObj1.value=13;
         System.out.println("newObj31.newObj1==newObj1:"+(newObj31.newObj1.value));
+
+
+        //反射
+
+        Class cla= newObj1.getClass();
+        Annotation[] annotations= cla.getDeclaredAnnotations();
+
+         Test1Annotation testAnnotation= (Test1Annotation) cla.getAnnotation(Test1Annotation.class);
+         TestAnnotation testAnnotation1 = (TestAnnotation) cla.getAnnotation(TestAnnotation.class);
+
+        com.company.Util.Annotation annotation=new  com.company.Util.Annotation<>(newObj1.getClass(),TestAnnotation.class);
+
+        com.company.Util.Annotation annotation1=new com.company.Util.Annotation(newObj.class,Test1Annotation.class);
+
+        annotation1.setAnnotationProperty((String) annotation.getAnnotationProperty("Name"),(String) annotation.getAnnotationProperty("Value"));
+
+
+        com.company.Util.Annotation annotation2=new com.company.Util.Annotation(newObj1);
+
+
+        annotation2.execute("out",1);
+//        System.out.printf("");
+//       String packageNameRoot=  System.getProperty("user.dir");
+//       File file=new File(packageNameRoot);
+
+    }
+    public static void GetFiles(String path, List<String> lists) throws IOException {
+        File file=new File(path);
+        if (file.isFile()){
+            lists.add(file.getCanonicalPath());
+        }
     }
 }
+
